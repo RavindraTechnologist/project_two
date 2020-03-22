@@ -1,0 +1,150 @@
+#%RAML 1.0
+title: project_two
+baseUri: http://bookstore.com
+version: v1
+
+uses: 
+  datatypes: !include datatypes.raml
+types:
+  Books: datatypes.Books
+  Author: datatypes.BookAuthor
+  Title: datatypes.BookTitle
+  Locales: datatypes.Locales
+  
+/getbooks:
+  description: Retrieve Books details
+  displayName: Get Book Operation
+  get:
+    description: Retrieve Books details
+    displayName: Get Book Operation
+    headers:
+      Accept-Language:
+        displayName: Accept-Language 
+        type: Locales
+        description: Accepted Language for the API
+        default: "en-US"
+        required: false
+    queryParameters:
+      authorName:
+        displayName: Author Name
+        type: string
+        description: Author Name of the Book
+        required: false
+      title:
+        displayName: Book Title
+        type: string
+        description: Title of the Book
+        required: false        
+    responses:
+      200:
+        description: success
+        body:
+          application/json:
+            type: Books
+  /{bookId}:
+    description: Get Book by Id Operation
+    displayName: Get Book by Id Operation
+    get:
+      description: Get Book by Id
+      displayName: Retrieve Books by Id
+      headers:
+        Accept-Language:
+          displayName: Accept-Language 
+          type: string
+          description: Accepted Language for the API
+          default: "en-US"
+          required: false
+      responses:
+        200:
+          description: success
+          body:
+            application/json:
+              type: Title
+/addbooks:
+  description: Add Books Operation
+  displayName: Add Books Operation
+  post:
+    description: Add Books Operation
+    displayName: Add Books Operation
+    headers:
+      Accept-Language:
+        displayName: Accept-Language 
+        type: Locales
+        description: Accepted Language for the API
+        default: "en-US"
+        required: false
+    body:
+      application/json:
+        type: Books
+    responses:
+      201:
+        body:
+          application/json:
+            type: Books
+/updatebooks:
+  description: Update Books Operation
+  displayName: Update Books Operation
+  /{bookId}:
+    put:
+      description: Update Books By Id Operation
+      displayName: Update Books By Id Operation
+      headers:
+        Accept-Language:
+          displayName: Accept-Language 
+          type: Locales
+          description: Accepted Language for the API
+          default: "en-US"
+          required: false
+      body:
+        application/json:
+          type: Title
+      responses:
+        200:
+          body:
+            application/json:
+              type: Title
+/bookupload:
+  description: The file to be reproduced by the client
+  displayName: Get books content in Audio format
+  get:
+    description: Get the file content
+    displayName: Get books content in Audio format
+    responses:
+      200:
+        body:
+          binary/octet-stream:
+            example: !include books.mp3
+  post:
+    description: 
+      Enters the file content for an existing song entity.
+
+      Use the "binary/octet-stream" content type to specify the content from any consumer (excepting web-browsers).
+      Use the "multipart-form/data" content type to upload a file which content will become the file-content
+    displayName: Upload books
+    body:
+      binary/octet-stream:
+      multipart/form-data:
+        properties:
+          file:
+            description: The file to be uploaded
+            required: true
+            type: file
+/deletebooks:
+  description: Remove Books
+  displayName: Remove Books
+  /{bookId}:
+    delete:
+      description: Remove Books
+      displayName: Remove Books
+      headers:
+        Accept-Language:
+          displayName: Accept-Language 
+          type: Locales
+          description: Accepted Language for the API
+          default: "en-US"
+          required: false
+      responses:
+        204:
+          body:
+            application/json:
+              example: "Book has been successfully removed."
